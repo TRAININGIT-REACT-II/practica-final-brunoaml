@@ -1,29 +1,47 @@
-import { useEffect, useState } from "react";
-import Status from "./components/Status";
+import React from "react";
+import { useEffect, useState} from "react";
+import "./App.css";
+import Layout from "./components/Layout";
+import { THEMES } from "./constants/themes";
+import Theme from "./contexts/theme";
+import User from "./contexts/user";
+import Register from "./views/Register";
+import Login from "./views/Login";
+import Notes from "./views/Notes";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 
-// Componente principal de la aplicación.
 const App = () => {
-  const [status, setStatus] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  // Cargamos el estado del servidor
-  useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setStatus(data.status === "ok"))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Mostramos la aplicación
-  return (
-    <main>
-      <h1>Curso de React de TrainingIT</h1>
-      <p>
-        Estado del servidor:
-        {loading ? " Cargando..." : <Status status={status} />}
-      </p>
-    </main>
-  );
+  const [theme, setTheme] = useState(THEMES.light);
+  const [user, setUser] = useState("");
+  useEffect(() => { 
+    if (document.body.classList.value == "") {
+      document.body.classList.add(theme);
+    } else {
+      document.body.classList.replace(
+        document.body.classList.value,
+        theme
+      );
+    }
+  }, [theme]);
+  return <Theme.Provider value={{ current: theme, update: setTheme}}>
+  <User.Provider value={{ current: user, update: setUser}}>
+    <Router>
+      <Layout title="TrainingNotes">
+        <nav className="secondary">
+          {user==="" && <NavLink to="/login" activeClassName="active">Iniciar sesión</NavLink>}
+        </nav>
+            <Route path="/login">
+              <Login/>
+            </Route>
+            <Route path="/register">
+              <Register/>
+            </Route>
+            <Route path="/notes">
+              <Notes/>
+            </Route>
+      </Layout>
+    </Router>
+  </User.Provider>
+  </Theme.Provider>
 };
-
 export default App;
