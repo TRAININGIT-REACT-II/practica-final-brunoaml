@@ -1,0 +1,33 @@
+.layout {
+  max-width: 1024px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.layout_header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.layout_header h1 {
+  margin: 0;
+}
+
+.layout_nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: .5rem 0 0;
+  padding: 0; 
+}
+
+.layout_nav ul li {
+  padding: 0 1rem;
+}
+
+.layout_nav ul li a {
+  display: block;
+}
